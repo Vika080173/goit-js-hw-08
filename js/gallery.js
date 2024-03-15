@@ -64,36 +64,34 @@ const images = [
   },
 ];
 
-const container = document.querySelector(".gallery");
-container.insertAdjacentHTML("beforeend", createMarkup(images));
-container.addEventListener("click", hendleImgClick);
+const gallery = document.querySelector(".gallery");
+gallery.insertAdjacentHTML("beforeend", createMarkup(images));
+gallery.addEventListener("click", handleImgClick);
 
-function createMarkup(arr) {
-  return arr
+function createMarkup(images) {
+  return images
     .map(
       (image) => `
-        <li class="gallery-item">
-        <img src="${image.preview}" alt="${image.description}" width="300">
-        </li>
-        `
+    <li class="gallery-item">
+        <img class="gallery-image" src="${image.preview}" data-source = "${image.original}" alt="${image.description}" width="300"/>
+       </li>
+    `
     )
     .join("");
 }
-function hendleImgClick(event) {
-  if (event.target === event.currentTarget) {
-    return;
-  }
+
+function handleImgClick(event) {
+  if (event.currentTarget === event.target) return;
+
+  const originalImage = event.target.dataset.source;
+  const image = images.find(({ original }) => original === originalImage);
+
+  const instance = basicLightbox.create(
+    `<img
+            class="gallery-image"
+            src="${image.original}"
+            alt="${image.description}" 
+          />`
+  );
+  instance.show();
 }
-
-const currentImage = event.target.closest(".gallery-item");
-const altImage = currentImage.dataset.description;
-const itemImage = images.find((item) => item.description === altImage);
-
-const instance = basicLightbox.create(`
-<div class="modal">
-<img src = "${image.original}" alt="${image.description}"  width="600" height="600">
-</div>
-`);
-
-
-instance.show();

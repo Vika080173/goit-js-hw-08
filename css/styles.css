@@ -21,6 +21,7 @@ ul {
   margin-left: auto;
   margin-right: auto;
   gap: 24px;
+  background-color: antiquewhite;
 }
 
 .gallery-item {
